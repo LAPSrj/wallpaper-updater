@@ -1,4 +1,4 @@
-# Windows Daily Wallpaper Updater
+# Daily Wallpaper Updater
 
 This repository provides a PowerShell script and a pre-configured Windows Task Scheduler XML file to automatically download and set Bing's wallpaper of the day as your desktop background, updating daily without user interaction.
 
