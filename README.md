@@ -25,6 +25,15 @@ The reason I made this script is because I got tired of all the bugs of the offi
   - Runs the script daily at 5:00 AM (or at the first opportunity).
   - Updates the wallpaper silently in the background.
 
+- **walpaper_downloader.exe**  
+  For your convenience, a compiled version of `wallpaper_downloader.ps1` to avoid PowerShell blinking on the screen
+
+- **Update Wallpaper (exe).xml**  
+  A ready-to-import Windows Task Scheduler task that:
+  - Runs the script daily at 5:00 AM (or at the first opportunity).
+  - Updates the wallpaper silently in the background.
+  - Uses the `.exe` file to avoid PowerShell blinking on the screen.
+
 ### Why is there a `Today.jpg` file?
 
 Since Microsoft still doesn't offer an easy way to programatically change the background of all the desktops at once, I had to get creative to achieve that. The solution I found was to use the same image file but change its contents daily. By doing so it is possible to just make a call for Windows Explorer to update its cache and the image is be replaced on all virtual desktops.
@@ -107,6 +116,23 @@ For this script to be able to change the image on all desktops, you need to eith
 **Settings** app → **Personalization** → Right click the current background image → Click **Set for all desktops**
 
 If you want to use a different background on a specific desktop, you can change the image on that desktop and it won't be automatically updated anymore.
+
+
+## To compile with ps2exe
+
+If you don't want a PowerShell window blinking when the script runs, compile it with [ps2exe](https://www.powershellgallery.com/packages/ps2exe) and use the `.exe` file on the task scheduler.
+
+To install **ps2exe** run the following command on a PowerShell with Administrator privileges:
+
+```
+Install-Module ps2exe
+```
+
+Then run the following command to compile it:
+
+```
+Invoke-ps2exe .\wallpaper_downloader.ps1 .\wallpaper_downloader.exe -noConsole
+```
 
 
 ## Disclaimer

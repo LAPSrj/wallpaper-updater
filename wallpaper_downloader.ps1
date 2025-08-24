@@ -4,7 +4,41 @@
 param(
     [string]$Location = "ca"
 )
+# ===== Auto-wrapped for silent compiled execution =====
+# When compiled with ps2exe -noConsole or run via Task Scheduler, suppress any UI popups.
+$IsConsole = $Host.Name -like '*Console*'
 
+if (-not $IsConsole) {
+  # Mute informational streams
+  $ErrorActionPreference = 'SilentlyContinue'
+  $WarningPreference     = 'SilentlyContinue'
+  $InformationPreference = 'SilentlyContinue'
+  $VerbosePreference     = 'SilentlyContinue'
+  $ProgressPreference    = 'SilentlyContinue'
+  try {
+    [Console]::SetOut([System.IO.TextWriter]::Null)
+    [Console]::SetError([System.IO.TextWriter]::Null)
+  } catch {}
+
+  # Swallow host/UI outputs that would become message boxes
+  function global:Write-Host {
+    param([Parameter(ValueFromRemainingArguments=$true)][object[]]$Object, [ConsoleColor]$ForegroundColor, [ConsoleColor]$BackgroundColor, [switch]$NoNewline)
+    # no-op in GUI mode
+  }
+  function global:Out-Host {
+    param([Parameter(ValueFromPipeline=$true, ValueFromRemainingArguments=$true)][object[]]$InputObject, [switch]$Paging)
+    process { } # no-op
+  }
+  function global:Out-Default {
+    param([Parameter(ValueFromPipeline=$true, ValueFromRemainingArguments=$true)] $InputObject)
+    process { } # swallow success stream
+  }
+  function global:Read-Host { param([string]$Prompt) '' } # non-interactive
+}
+# ===== End silent header =====
+
+
+function Invoke-Main {
 # Define valid locations
 $validLocations = @("us","uk","jp","de","fr","es","br","in","ca","au","cn","it")
 
@@ -92,3 +126,12 @@ $SPIF_SENDWININICHANGE = 0x02
 Start-Process -FilePath "RUNDLL32.EXE" -ArgumentList "USER32.DLL,UpdatePerUserSystemParameters" -WindowStyle Hidden
 
 Write-Host "Wallpaper updated successfully from: $realFilePath"
+}
+
+
+if ($IsConsole) {
+  Invoke-Main
+} else {
+  Invoke-Main | Out-Null
+  exit 0
+}
