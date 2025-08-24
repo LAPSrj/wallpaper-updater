@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Date>2025-08-01T10:46:22.6922972</Date>
+    <Date>2025-08-24T19:27:36.568936</Date>
     <Author>https://github.com/LAPSrj</Author>
     <Description>This updates your wallpaper daily. For more information: https://github.com/LAPSrj/wallpaper-updater</Description>
     <URI>\Update Wallpaper</URI>
@@ -9,11 +9,15 @@
   <Triggers>
     <CalendarTrigger>
       <StartBoundary>2025-08-01T05:00:00</StartBoundary>
-      <ExecutionTimeLimit>PT30M</ExecutionTimeLimit>
       <Enabled>true</Enabled>
       <ScheduleByDay>
         <DaysInterval>1</DaysInterval>
       </ScheduleByDay>
+      <Repetition>
+        <Interval>PT1H</Interval>
+        <Duration>P1D</Duration>
+        <StopAtDurationEnd>true</StopAtDurationEnd>
+      </Repetition>
     </CalendarTrigger>
   </Triggers>
   <Principals>
@@ -37,14 +41,14 @@
     <Enabled>true</Enabled>
     <Hidden>false</Hidden>
     <RunOnlyIfIdle>false</RunOnlyIfIdle>
-    <WakeToRun>false</WakeToRun>
+    <WakeToRun>true</WakeToRun>
     <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>
     <Priority>7</Priority>
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>powershell.exe</Command>
-      <Arguments>-WindowStyle Hidden -ExecutionPolicy Bypass -File "%USERPROFILE%\wallpaper_downloader.ps1" -Location ca</Arguments>
+      <Command>"%USERPROFILE%\wallpaper_downloader.exe"</Command>
+      <Arguments>-Location ca</Arguments>
     </Exec>
   </Actions>
 </Task>
