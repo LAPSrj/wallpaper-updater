@@ -6,6 +6,8 @@ param(
   [switch]$Force             # bypass today's success stamp for testing
 )
 
+Add-Type -AssemblyName System.Net.Http
+
 # ---- Console vs compiled detection (silent only when compiled) ----
 $procName   = ([Diagnostics.Process]::GetCurrentProcess().ProcessName).ToLowerInvariant()
 $IsCompiled = $procName -notin @('powershell','pwsh','powershell_ise')
